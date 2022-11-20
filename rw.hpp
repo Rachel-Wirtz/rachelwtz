@@ -3,6 +3,6 @@
 
 #define RACHELWTZ_NAMESPACE     rw
 #define RACHELWTZ_BEGIN         namespace RACHELWTZ_NAMESPACE {
-#define RACHELWTZ_END            }
+#define RACHELWTZ_END           }
 
 #endif
