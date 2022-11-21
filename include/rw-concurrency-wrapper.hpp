@@ -136,7 +136,10 @@ public:
         else f(m_Data);
     }
 
+#ifndef RACHELWTZ_TEST_CONCURRENCY
 protected:
+#endif
+
     //
     // Private utility function used in copy constructor to avoid double initialization.
     // Locks std::mutex and returns the reference of the other's underlaying T to be copied into the target T.

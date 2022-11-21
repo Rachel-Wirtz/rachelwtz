@@ -14,7 +14,7 @@ public:
 
 RACHELWTZ_CORE_END
 
-#define RACHELWTZ_ASSERT(x)     { if (!(x)) { throw ::RACHELWTZ_NAMESPACE::RACHELWTZ_CORE_NAMESPACE::assertion_failure(#x); } }
+#define RACHELWTZ_ASSERT(x)     { if (!(x)) { throw ::RACHELWTZ_NAMESPACE::RACHELWTZ_CORE_NAMESPACE::assertion_failure("Assertion failure (" #x ")"); } }
 
 #if defined(DEBUG) || defined(_DEBUG) || !(defined(NDEBUG) || defined(_NDEBUG))
     #define RACHELWTZ_DEBUG

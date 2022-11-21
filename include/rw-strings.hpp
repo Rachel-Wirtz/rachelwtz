@@ -22,6 +22,9 @@ RACHELWTZ_STRINGS_BEGIN
 template<typename CharT>
 struct char_traits { };
 
+template<typename CharT, typename TraitsT = char_traits<CharT>>
+class basic_string_view;
+
 template<typename CharT, typename TraitsT = char_traits<CharT>, typename AllocT = std::allocator<CharT>>
 class basic_string : public std::basic_string<CharT, TraitsT, AllocT> {
 public:    
@@ -42,6 +45,11 @@ public:
     using reverse_iterator       = typename base_type::reverse_iterator;
     using const_reverse_iterator = typename base_type::const_reverse_iterator;
 
+    constexpr basic_string(const basic_string_view<CharT, TraitsT> sv)
+        : base_type(sv)
+    {
+    }
+
     constexpr size_type size(void) const noexcept {
         return (base_type::size() + 1) * sizeof(value_type);
     }
@@ -59,7 +67,7 @@ public:
     }
 };
 
-template<typename CharT, typename TraitsT = char_traits<CharT>>
+template<typename CharT, typename TraitsT>
 class basic_string_view : public std::basic_string_view<CharT, TraitsT> {
 public:
     using std::basic_string_view<CharT, TraitsT>::basic_string_view;
@@ -77,6 +85,12 @@ public:
     using reverse_iterator       = typename base_type::reverse_iterator;
     using size_type              = typename base_type::size_type;
     using difference_type        = typename base_type::difference_type;
+
+    template<typename AllocT>
+    constexpr basic_string_view(const basic_string<CharT, TraitsT, AllocT>& s)
+        : base_type(s)
+    {
+    }
 
     constexpr size_type size(void) const noexcept {
         return (base_type::size() + 1) * sizeof(value_type);

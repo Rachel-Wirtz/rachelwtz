@@ -1,3 +1,5 @@
+#define RACHELWTZ_TEST_CONCURRENCY
+
 #include "rw-concurrency.hpp"
 #include "rw-testing.hpp"
 
@@ -18,13 +20,15 @@ int main() {
         storage_copy = storage;
         storage_move = std::move(storage_copy);
 
-        std::size_t size = storage([](const std::vector<int>& vec) noexcept { 
+        std::size_t size = storage([&storage](const std::vector<int>& vec) {
+            RACHELWTZ_ASSERT(!storage.m_Mtx.try_lock());
             return vec.size(); 
         });
 
         RACHELWTZ_DEBUG_ASSERT(size == 10);
 
-        size = storage([](std::vector<int>& vec) noexcept {
+        size = storage([&storage](std::vector<int>& vec) {
+            RACHELWTZ_ASSERT(!storage.m_Mtx.try_lock());
             vec.push_back(110);
             return vec.size(); 
         });
