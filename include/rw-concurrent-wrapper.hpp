@@ -1,9 +1,11 @@
-#ifndef RACHELWTZ__THREADING__SHARED_WRAPPER__HPP
-#define RACHELWTZ__THREADING__SHARED_WRAPPER__HPP
-#include "rw-threading.hpp"
-RACHELWTZ_THREADING_BEGIN
+#ifndef RACHELWTZ__CONCURRENT_WRAPPER__HPP
+#define RACHELWTZ__CONCURRENT_WRAPPER__HPP
+#include "rw.hpp"
 
 #include <mutex>
+#include <thread>
+
+RACHELWTZ_BEGIN
 
 // 
 // Provides a simple interface to turn non-atomic types thread safe by using locks.
@@ -13,13 +15,13 @@ RACHELWTZ_THREADING_BEGIN
 // L: Lock Type to be used. Behavior and usaged should be similar to std::scoped_lock.
 // 
 // Usage:
-// shared_wrapper<std::vector<int>> v = std::initializer_list{ 10, 20, 30, 40 };
+// concurrent_wrapper<std::vector<int>> v = std::initializer_list{ 10, 20, 30, 40 };
 // std::size_t size = v([](const auto& vec) noexcept -> std::size_t {
 //     return vec.size();
 // });
 // 
 template<typename T, typename M = std::mutex, typename L = std::scoped_lock<M>>
-class shared_wrapper {
+class concurrent_wrapper {
 public:
     using value_type = T;
     using mutex_type = M;
@@ -29,7 +31,7 @@ public:
     // Default constructor is available if T is default constructible and declared noexcept(true) if the T is nothrow default constructible.
     // Note: Ignoring potentially throwing M constructor, so std::terminate is being called if throwing.
     // 
-    shared_wrapper() noexcept(std::is_nothrow_default_constructible_v<value_type>) requires std::is_default_constructible_v<value_type>
+    concurrent_wrapper() noexcept(std::is_nothrow_default_constructible_v<value_type>) requires std::is_default_constructible_v<value_type>
         : m_Mtx{}
         , m_Data{}
     {
@@ -39,7 +41,7 @@ public:
     // Copy constructor is available if T is copy constructible and declared noexcept(true) if the T is nothrow copy constructible.
     // Note: Ignoring potentially throwing M constructor, so std::terminate is being called if throwing.
     // 
-    shared_wrapper(const shared_wrapper& other) noexcept(std::is_nothrow_copy_constructible_v<value_type>) requires std::is_copy_constructible_v<value_type>
+    concurrent_wrapper(const concurrent_wrapper& other) noexcept(std::is_nothrow_copy_constructible_v<value_type>) requires std::is_copy_constructible_v<value_type>
         : m_Mtx{}
         , m_Data(locked_reference(other))
     {
@@ -49,9 +51,9 @@ public:
     // Move constructor is available if T is move constructible and declared noexcept(true) if the T is nothrow move constructible.
     // Note: Ignoring potentially throwing M constructor, so std::terminate is being called if throwing.
     // 
-    shared_wrapper(shared_wrapper&& other) noexcept(std::is_nothrow_move_constructible_v<value_type>) requires std::is_move_constructible_v<value_type>
+    concurrent_wrapper(concurrent_wrapper&& other) noexcept(std::is_nothrow_move_constructible_v<value_type>) requires std::is_move_constructible_v<value_type>
         : m_Mtx{}
-        , m_Data(locked_reference(std::forward<shared_wrapper>(other)))
+        , m_Data(locked_reference(std::forward<concurrent_wrapper>(other)))
     {
     }
 
@@ -60,7 +62,7 @@ public:
     // Note: Ignoring potentially throwing M constructor, so std::terminate is being called if throwing.
     // 
     template<typename ... Args> requires std::is_constructible_v<value_type, Args...>
-    shared_wrapper(Args&& ... args) noexcept(std::is_nothrow_constructible_v<value_type, Args...>)
+    concurrent_wrapper(Args&& ... args) noexcept(std::is_nothrow_constructible_v<value_type, Args...>)
         : m_Mtx{}
         , m_Data(std::forward<Args>(args)...)
     {
@@ -69,7 +71,7 @@ public:
     // 
     // Destructor. For completeness following explicit nothrow declaration according to T::~T().
     // 
-    ~shared_wrapper() noexcept(std::is_nothrow_destructible_v<value_type>) requires std::is_destructible_v<value_type> {
+    ~concurrent_wrapper() noexcept(std::is_nothrow_destructible_v<value_type>) requires std::is_destructible_v<value_type> {
 
     }
 
@@ -77,7 +79,7 @@ public:
     // Copy assignment operator is available if T is copy assignable and declared noexcept(true) if T is nothrow copy assignable.
     // Note: Ignoring potentially throwing L constructor, so std::terminate is being called if throwing.
     // 
-    shared_wrapper& operator=(const shared_wrapper& other) noexcept(std::is_nothrow_copy_assignable_v<value_type>) requires std::is_copy_assignable_v<value_type> {
+    concurrent_wrapper& operator=(const concurrent_wrapper& other) noexcept(std::is_nothrow_copy_assignable_v<value_type>) requires std::is_copy_assignable_v<value_type> {
         if (this != &other) {
             lock_type lock(m_Mtx, other.m_Mtx);
             m_Data = other.m_Data;
@@ -89,7 +91,7 @@ public:
     // Move assignment operator is available if T is move assignable and declared noexcept(true) if T is nothrow move assignable.
     // Note: Ignoring potentially throwing L constructor, so std::terminate is being called if throwing.
     // 
-    shared_wrapper& operator=(shared_wrapper&& other) noexcept(std::is_nothrow_move_assignable_v<value_type>) requires std::is_move_assignable_v<value_type> {
+    concurrent_wrapper& operator=(concurrent_wrapper&& other) noexcept(std::is_nothrow_move_assignable_v<value_type>) requires std::is_move_assignable_v<value_type> {
         if (this != &other) {
             lock_type lock(m_Mtx, other.m_Mtx);
             m_Data = std::move(other.m_Data);
@@ -102,7 +104,7 @@ public:
     // Note: Ignoring potentially throwing L constructor, so std::terminate is being called if throwing.
     // 
     template<typename T> requires std::is_assignable_v<value_type, T>
-    shared_wrapper& operator=(T&& arg) noexcept(std::is_nothrow_assignable_v<value_type, T>) {
+    concurrent_wrapper& operator=(T&& arg) noexcept(std::is_nothrow_assignable_v<value_type, T>) {
         lock_type lock(m_Mtx);
         m_Data = std::forward<T>(arg);
         return *this;
@@ -145,7 +147,7 @@ protected:
     // Private utility function used in copy constructor to avoid double initialization.
     // Locks M and returns the reference of the other's underlaying T to be copied into the target T.
     //
-    const value_type& locked_reference(const shared_wrapper& other) noexcept {
+    const value_type& locked_reference(const concurrent_wrapper& other) noexcept {
         lock_type lock(other.m_Mtx);
         return other.m_Data;
     }
@@ -154,7 +156,7 @@ protected:
     // Private utility function used in move constructor to avoid double initialization.
     // Locks M and returns the reference of the other's underlaying T to be moved into the target T.
     //
-    value_type&& locked_reference(shared_wrapper&& other) noexcept {
+    value_type&& locked_reference(concurrent_wrapper&& other) noexcept {
         lock_type lock(other.m_Mtx);
         return std::move(other.m_Data);
     }
@@ -163,5 +165,5 @@ protected:
     mutable mutex_type m_Mtx;
 };
 
-RACHELWTZ_THREADING_END
+RACHELWTZ_END
 #endif
