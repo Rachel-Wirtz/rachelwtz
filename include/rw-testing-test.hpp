@@ -10,7 +10,7 @@ public:
     using function_type = std::function<void()>;
     using list_type     = std::vector<function_type>;
 
-    int run(void) const noexcept {        
+    int run(void) const noexcept {
         bool ok = true;
 
         for (const auto& f : m_Tests) {

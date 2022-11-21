@@ -2,7 +2,7 @@
 #define RACHELWTZ__CONCURRENCY__HPP
 
 #include "rw-core.hpp"
-                                        
+
 #define RACHELWTZ_CONCURRENCY_NAMESPACE concurrency
 #define RACHELWTZ_CONCURRENCY_BEGIN     namespace RACHELWTZ_NAMESPACE::RACHELWTZ_CONCURRENCY_NAMESPACE {
 #define RACHELWTZ_CONCURRENCY_END       }

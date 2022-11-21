@@ -9,7 +9,7 @@ USING_RACHELWTZ_TESTING;
 
 #include <vector>
 
-int main() {    
+int main() {
     test test{};
 
     test.add([]() {
@@ -22,7 +22,7 @@ int main() {
 
         std::size_t size = storage([&storage](const std::vector<int>& vec) {
             RACHELWTZ_ASSERT(!storage.m_Mtx.try_lock());
-            return vec.size(); 
+            return vec.size();
         });
 
         RACHELWTZ_DEBUG_ASSERT(size == 10);
@@ -30,7 +30,7 @@ int main() {
         size = storage([&storage](std::vector<int>& vec) {
             RACHELWTZ_ASSERT(!storage.m_Mtx.try_lock());
             vec.push_back(110);
-            return vec.size(); 
+            return vec.size();
         });
 
         RACHELWTZ_DEBUG_ASSERT(size == 11);

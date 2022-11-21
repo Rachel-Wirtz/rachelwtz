@@ -70,7 +70,7 @@ struct char_traits<wchar_t> : public std::char_traits<wchar_t> {
                         return false;
                     ptr += 2;
                     break;
-    
+
                 default:
                     return false;
                 }

@@ -27,7 +27,7 @@ class basic_string_view;
 
 template<typename CharT, typename TraitsT = char_traits<CharT>, typename AllocT = std::allocator<CharT>>
 class basic_string : public std::basic_string<CharT, TraitsT, AllocT> {
-public:    
+public:
     using std::basic_string<CharT, TraitsT, AllocT>::basic_string;
 
     using base_type              = std::basic_string<CharT, TraitsT, AllocT>;
