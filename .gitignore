@@ -5,6 +5,7 @@
 /.vs
 /.output
 /tests/all
+/Sandbox
 *.sln
 *.vcxitems*
 *.vcxproj*
