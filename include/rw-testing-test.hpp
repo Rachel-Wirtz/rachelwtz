@@ -18,7 +18,7 @@ public:
                 f();
             }
             catch (std::exception& e) {
-                std::cout << "Test failed: {" << typeid(e).name() << ", " << e.what() << "}" << std::endl;
+                std::cout << e.what() << std::endl;
                 ok = false;
             }
         }
