@@ -26,7 +26,8 @@ int main() {
         size_t ansi_str_count = ansi_str.count();
         RACHELWTZ_ASSERT(ansi_str_size  == 14);
         RACHELWTZ_ASSERT(ansi_str_len   == 14);
-        RACHELWTZ_ASSERT(ansi_str_count == 13);       
+        RACHELWTZ_ASSERT(ansi_str_count == 13);      
+        RACHELWTZ_ASSERT(ansi_str.is_valid());
         
         string_view ansi_sv{ ansi };
         size_t ansi_sv_size  = ansi_sv.size();
@@ -34,7 +35,8 @@ int main() {
         size_t ansi_sv_count = ansi_sv.count();
         RACHELWTZ_ASSERT(ansi_sv_size  == 14);
         RACHELWTZ_ASSERT(ansi_sv_len   == 14);
-        RACHELWTZ_ASSERT(ansi_sv_count == 13);       
+        RACHELWTZ_ASSERT(ansi_sv_count == 13);
+        RACHELWTZ_ASSERT(ansi_sv.is_valid());
     });
 
     test.add([]() constexpr {
@@ -54,6 +56,7 @@ int main() {
         RACHELWTZ_ASSERT(wide_str_size  == 28);
         RACHELWTZ_ASSERT(wide_str_len   == 14);
         RACHELWTZ_ASSERT(wide_str_count == 13);
+        RACHELWTZ_ASSERT(wide_str.is_valid());
 
         wstring_view wide_sv{ wide_str };
         size_t wide_sv_size  = wide_sv.size();
@@ -62,6 +65,7 @@ int main() {
         RACHELWTZ_ASSERT(wide_sv_size  == 28);
         RACHELWTZ_ASSERT(wide_sv_len   == 14);
         RACHELWTZ_ASSERT(wide_sv_count == 13);
+        RACHELWTZ_ASSERT(wide_sv.is_valid());
     });
 
     test.add([]() constexpr {
@@ -81,6 +85,7 @@ int main() {
         RACHELWTZ_ASSERT(utf8_str_size  == 18);
         RACHELWTZ_ASSERT(utf8_str_len   == 18);
         RACHELWTZ_ASSERT(utf8_str_count == 15);
+        RACHELWTZ_ASSERT(utf8_str.is_valid());
 
         u8string_view utf8_sv{ utf8_str };
         size_t utf8_sv_size  = utf8_sv.size();
@@ -89,6 +94,7 @@ int main() {
         RACHELWTZ_ASSERT(utf8_sv_size  == 18);
         RACHELWTZ_ASSERT(utf8_sv_len   == 18);
         RACHELWTZ_ASSERT(utf8_sv_count == 15);
+        RACHELWTZ_ASSERT(utf8_sv.is_valid());
     });
 
     test.add([]() constexpr {
@@ -108,6 +114,7 @@ int main() {
         RACHELWTZ_ASSERT(utf16_str_size  == 34);
         RACHELWTZ_ASSERT(utf16_str_len   == 17);
         RACHELWTZ_ASSERT(utf16_str_count == 15);
+        RACHELWTZ_ASSERT(utf16_str.is_valid());
         
         u16string_view utf16_sv{ utf16_str };
         size_t utf16_sv_size  = utf16_sv.size();
@@ -116,6 +123,7 @@ int main() {
         RACHELWTZ_ASSERT(utf16_sv_size  == 34);
         RACHELWTZ_ASSERT(utf16_sv_len   == 17);
         RACHELWTZ_ASSERT(utf16_sv_count == 15);
+        RACHELWTZ_ASSERT(utf16_sv.is_valid());
     });
 
     test.add([]() constexpr {
@@ -135,6 +143,7 @@ int main() {
         RACHELWTZ_ASSERT(utf32_str_size  == 64);
         RACHELWTZ_ASSERT(utf32_str_len   == 16);
         RACHELWTZ_ASSERT(utf32_str_count == 15);
+        RACHELWTZ_ASSERT(utf32_str.is_valid());
 
         u32string_view utf32_sv{ utf32_str };
         size_t utf32_sv_size  = utf32_sv.size();
@@ -143,6 +152,7 @@ int main() {
         RACHELWTZ_ASSERT(utf32_sv_size  == 64);
         RACHELWTZ_ASSERT(utf32_sv_len   == 16);
         RACHELWTZ_ASSERT(utf32_sv_count == 15);
+        RACHELWTZ_ASSERT(utf32_sv.is_valid());
     });
 
     return test.run();

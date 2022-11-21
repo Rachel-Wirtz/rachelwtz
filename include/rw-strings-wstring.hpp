@@ -22,7 +22,9 @@ struct char_traits<wchar_t> : public std::char_traits<wchar_t> {
         }
 
         if constexpr (sizeof(wchar_t) == sizeof(char32_t)) {
-            return 1;
+            if (c >= 0x000000 && c <= 0x10FFFF)
+                return 1;
+            return 0;
         }
 
         return 0;
@@ -44,6 +46,12 @@ struct char_traits<wchar_t> : public std::char_traits<wchar_t> {
         }
 
         if constexpr (sizeof(wchar_t) == sizeof(char32_t)) {
+            const wchar_t* ptr = str;
+            while (ptr && ptr < (str + count)) {
+                if (!code_point_length(*ptr))
+                    return 0;
+                ++ptr;
+            }
             return count;
         }
 
@@ -71,6 +79,12 @@ struct char_traits<wchar_t> : public std::char_traits<wchar_t> {
         }
 
         if constexpr (sizeof(wchar_t) == sizeof(char32_t)) {
+            const wchar_t* ptr = str;
+            while (ptr && ptr < (str + count)) {
+                if (!code_point_length(*ptr))
+                    return false;
+                ++ptr;
+            }
             return true;
         }
 
