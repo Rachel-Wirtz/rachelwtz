@@ -11,8 +11,6 @@ RACHELWTZ_BEGIN
 // Provides a simple interface to turn non-atomic types thread safe by using locks.
 // 
 // T: Value Type to be stored and protected
-// M: Mutex Type to be used. Behavior and usaged should be similar to std::mutex.
-// L: Lock Type to be used. Behavior and usaged should be similar to std::scoped_lock.
 // 
 // Usage:
 // concurrent_wrapper<std::vector<int>> v = std::initializer_list{ 10, 20, 30, 40 };
@@ -20,12 +18,10 @@ RACHELWTZ_BEGIN
 //     return vec.size();
 // });
 // 
-template<typename T, typename M = std::mutex, typename L = std::scoped_lock<M>>
+template<typename T>
 class concurrent_wrapper {
 public:
     using value_type = T;
-    using mutex_type = M;
-    using lock_type  = L;
 
     // 
     // Default constructor is available if T is default constructible and declared noexcept(true) if the T is nothrow default constructible.
@@ -81,7 +77,7 @@ public:
     // 
     concurrent_wrapper& operator=(const concurrent_wrapper& other) noexcept(std::is_nothrow_copy_assignable_v<value_type>) requires std::is_copy_assignable_v<value_type> {
         if (this != &other) {
-            lock_type lock(m_Mtx, other.m_Mtx);
+            std::scoped_lock lock(m_Mtx, other.m_Mtx);
             m_Data = other.m_Data;
         }
         return *this;
@@ -93,7 +89,7 @@ public:
     // 
     concurrent_wrapper& operator=(concurrent_wrapper&& other) noexcept(std::is_nothrow_move_assignable_v<value_type>) requires std::is_move_assignable_v<value_type> {
         if (this != &other) {
-            lock_type lock(m_Mtx, other.m_Mtx);
+            std::scoped_lock lock(m_Mtx, other.m_Mtx);
             m_Data = std::move(other.m_Data);
         }
         return *this;
@@ -105,7 +101,7 @@ public:
     // 
     template<typename T> requires std::is_assignable_v<value_type, T>
     concurrent_wrapper& operator=(T&& arg) noexcept(std::is_nothrow_assignable_v<value_type, T>) {
-        lock_type lock(m_Mtx);
+        std::scoped_lock lock(m_Mtx);
         m_Data = std::forward<T>(arg);
         return *this;
     }
@@ -119,7 +115,7 @@ public:
     //
     template<typename F> requires std::is_invocable_v<F, value_type&>
     auto operator()(F&& f) noexcept(std::is_nothrow_invocable_v<F, value_type&>) -> std::invoke_result_t<F, value_type&> {
-        lock_type lock(m_Mtx);
+        std::scoped_lock lock(m_Mtx);
         if constexpr (!std::is_void_v<std::invoke_result_t<F, value_type&>>) {
             return f(m_Data);
         }
@@ -135,7 +131,7 @@ public:
     //
     template<typename F> requires std::is_invocable_v<F, const value_type&>
     auto operator()(F&& f) const noexcept(std::is_nothrow_invocable_v<F, const value_type&>) -> std::invoke_result_t<F, const value_type&> {
-        lock_type lock(m_Mtx);
+        std::scoped_lock lock(m_Mtx);
         if constexpr (!std::is_void_v<std::invoke_result_t<F, const value_type&>>) {
             return f(m_Data);
         }
@@ -148,7 +144,7 @@ protected:
     // Locks M and returns the reference of the other's underlaying T to be copied into the target T.
     //
     const value_type& locked_reference(const concurrent_wrapper& other) noexcept {
-        lock_type lock(other.m_Mtx);
+        std::scoped_lock lock(other.m_Mtx);
         return other.m_Data;
     }
 
@@ -157,12 +153,12 @@ protected:
     // Locks M and returns the reference of the other's underlaying T to be moved into the target T.
     //
     value_type&& locked_reference(concurrent_wrapper&& other) noexcept {
-        lock_type lock(other.m_Mtx);
+        std::scoped_lock lock(other.m_Mtx);
         return std::move(other.m_Data);
     }
 
     value_type         m_Data;
-    mutable mutex_type m_Mtx;
+    mutable std::mutex m_Mtx;
 };
 
 RACHELWTZ_END
