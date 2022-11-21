@@ -1,9 +1,9 @@
-#ifndef RACHELWTZ__U16STRING__HPP
-#define RACHELWTZ__U16STRING__HPP
+#ifndef RACHELWTZ__STRINGS__U16STRING__HPP
+#define RACHELWTZ__STRINGS__U16STRING__HPP
 
-#include "rw-string-base.hpp"
+#include "rw-strings.hpp"
 
-RACHELWTZ_BEGIN
+RACHELWTZ_STRINGS_BEGIN
 
 template<>
 struct char_traits<char16_t> : public std::char_traits<char16_t> {
@@ -54,5 +54,5 @@ struct char_traits<char16_t> : public std::char_traits<char16_t> {
 using u16string      = basic_string<char16_t>;
 using u16string_view = basic_string_view<char16_t>;
 
-RACHELWTZ_END
+RACHELWTZ_STRINGS_END
 #endif

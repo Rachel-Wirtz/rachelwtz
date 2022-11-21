@@ -1,9 +1,9 @@
-#ifndef RACHELWTZ__STRING__HPP
-#define RACHELWTZ__STRING__HPP
+#ifndef RACHELWTZ__STRINGS__STRING__HPP
+#define RACHELWTZ__STRINGS__STRING__HPP
 
-#include "rw-string-base.hpp"
+#include "rw-strings.hpp"
 
-RACHELWTZ_BEGIN
+RACHELWTZ_STRINGS_BEGIN
 
 //
 // Assuming that char holds either ANSI or UTF8.
@@ -62,5 +62,5 @@ struct char_traits<char> : public std::char_traits<char> {
 using string      = basic_string<char>;
 using string_view = basic_string_view<char>;
 
-RACHELWTZ_END
+RACHELWTZ_STRINGS_END
 #endif

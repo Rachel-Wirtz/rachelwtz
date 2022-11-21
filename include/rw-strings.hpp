@@ -1,13 +1,19 @@
-#ifndef RACHELWTZ__STRING_BASE__HPP
-#define RACHELWTZ__STRING_BASE__HPP
-#include "rw.hpp"
+#ifndef RACHELWTZ__STRINGS__HPP
+#define RACHELWTZ__STRINGS__HPP
+
+#include "rw-core.hpp"
 
 #include <cctype>
 #include <cuchar>
 #include <cwchar>
 #include <string>
 
-RACHELWTZ_BEGIN
+#define RACHELWTZ_STRINGS_NAMESPACE strings
+#define RACHELWTZ_STRINGS_BEGIN     namespace RACHELWTZ_NAMESPACE::RACHELWTZ_STRINGS_NAMESPACE {
+#define RACHELWTZ_STRINGS_END       }
+#define USING_RACHELWTZ_STRINGS     using namespace ::RACHELWTZ_NAMESPACE::RACHELWTZ_STRINGS_NAMESPACE
+
+RACHELWTZ_STRINGS_BEGIN
 
 //
 // Specified for each character type.
@@ -89,5 +95,15 @@ public:
     }
 };
 
-RACHELWTZ_END
+RACHELWTZ_STRINGS_END
+
+//
+// Strings Libraries
+//
+#include "rw-strings-string.hpp"
+#include "rw-strings-wstring.hpp"
+#include "rw-strings-u8string.hpp"
+#include "rw-strings-u16string.hpp"
+#include "rw-strings-u32string.hpp"
+
 #endif

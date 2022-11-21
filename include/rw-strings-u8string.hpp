@@ -1,9 +1,9 @@
-#ifndef RACHELWTZ__U8STRING__HPP
-#define RACHELWTZ__U8STRING__HPP
+#ifndef RACHELWTZ__STRINGS__U8STRING__HPP
+#define RACHELWTZ__STRINGS__U8STRING__HPP
 
-#include "rw-string-base.hpp"
+#include "rw-strings.hpp"
 
-RACHELWTZ_BEGIN
+RACHELWTZ_STRINGS_BEGIN
 
 template<>
 struct char_traits<char8_t> : public std::char_traits<char8_t> {
@@ -59,5 +59,5 @@ struct char_traits<char8_t> : public std::char_traits<char8_t> {
 using u8string      = basic_string<char8_t>;
 using u8string_view = basic_string_view<char8_t>;
 
-RACHELWTZ_END
+RACHELWTZ_STRINGS_END
 #endif

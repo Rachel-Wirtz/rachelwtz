@@ -1,9 +1,9 @@
-#ifndef RACHELWTZ__WSTRING__HPP
-#define RACHELWTZ__WSTRING__HPP
+#ifndef RACHELWTZ__STRINGS__WSTRING__HPP
+#define RACHELWTZ__STRINGS__WSTRING__HPP
 
-#include "rw-string-base.hpp"
+#include "rw-strings.hpp"
 
-RACHELWTZ_BEGIN
+RACHELWTZ_STRINGS_BEGIN
 
 //
 // Assuming that wchar_t holds either UTF16 or UTF32.
@@ -81,5 +81,5 @@ struct char_traits<wchar_t> : public std::char_traits<wchar_t> {
 using wstring      = basic_string<wchar_t>;
 using wstring_view = basic_string_view<wchar_t>;
 
-RACHELWTZ_END
+RACHELWTZ_STRINGS_END
 #endif

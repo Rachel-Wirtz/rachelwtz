@@ -1,9 +1,9 @@
-#ifndef RACHELWTZ__U32STRING__HPP
-#define RACHELWTZ__U32STRING__HPP
+#ifndef RACHELWTZ__STRINGS__U32STRING__HPP
+#define RACHELWTZ__STRINGS__U32STRING__HPP
 
-#include "rw-string-base.hpp"
+#include "rw-strings.hpp"
 
-RACHELWTZ_BEGIN
+RACHELWTZ_STRINGS_BEGIN
 
 template<>
 struct char_traits<char32_t> : public std::char_traits<char32_t> {
@@ -26,5 +26,5 @@ struct char_traits<char32_t> : public std::char_traits<char32_t> {
 using u32string      = basic_string<char32_t>;
 using u32string_view = basic_string_view<char32_t>;
 
-RACHELWTZ_END
+RACHELWTZ_STRINGS_END
 #endif
