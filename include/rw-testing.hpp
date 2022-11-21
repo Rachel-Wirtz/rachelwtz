@@ -4,9 +4,9 @@
 #include "rw-core.hpp"
 
 #include <vector>
-#include <optional>
 #include <functional>
 #include <iostream>
+#include <typeinfo>
 
 #define RACHELWTZ_TESTING_NAMESPACE testing
 #define RACHELWTZ_TESTING_BEGIN     namespace RACHELWTZ_NAMESPACE::RACHELWTZ_TESTING_NAMESPACE {

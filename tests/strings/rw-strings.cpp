@@ -5,9 +5,9 @@ USING_RACHELWTZ_STRINGS;
 USING_RACHELWTZ_TESTING;
 
 int main() {
-    test test{"Strings Library"};
+    test test{};
 
-    test.add("string", []() constexpr {        
+    test.add([]() constexpr {        
         constexpr string_view ansi = "Hello, World!";
         constexpr auto ansi_size  = ansi.size();
         constexpr auto ansi_len   = ansi.length();
@@ -26,7 +26,7 @@ int main() {
         RACHELWTZ_ASSERT(ansi_str_count == 13);        
     });
 
-    test.add("wstring", []() constexpr {
+    test.add([]() constexpr {
         constexpr wstring_view wide = L"Hello, World!";
         constexpr auto wide_size  = wide.size();
         constexpr auto wide_len   = wide.length();
@@ -45,7 +45,7 @@ int main() {
         RACHELWTZ_ASSERT(wide_count == 13);
     });
 
-    test.add("u8string", []() constexpr {
+    test.add([]() constexpr {
         constexpr u8string_view utf8 = u8"Hello, World! €";
         constexpr auto utf8_size  = utf8.size();
         constexpr auto utf8_len   = utf8.length();
@@ -64,7 +64,7 @@ int main() {
         RACHELWTZ_ASSERT(utf8_str_count == 15);
     });
 
-    test.add("u16string", []() constexpr {
+    test.add([]() constexpr {
         constexpr u16string_view utf16 = u"Hello, World! \xD852\xDF62";
         constexpr auto utf16_size  = utf16.size();
         constexpr auto utf16_len   = utf16.length();
@@ -83,7 +83,7 @@ int main() {
         RACHELWTZ_ASSERT(utf16_str_count == 15);
     });
 
-    test.add("u16string", []() constexpr {
+    test.add([]() constexpr {
         constexpr u32string_view utf32 = U"Hello, World! \x092A";
         constexpr auto utf32_size  = utf32.size();
         constexpr auto utf32_len   = utf32.length();

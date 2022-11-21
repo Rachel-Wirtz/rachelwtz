@@ -8,9 +8,9 @@ USING_RACHELWTZ_TESTING;
 #include <vector>
 
 int main() {    
-    test test{"Concurrency Library"};
+    test test{};
 
-    test.add("concurrent_wrapper", []() {
+    test.add([]() {
         wrapper<std::vector<int>> storage = std::initializer_list{ 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 };
         wrapper<std::vector<int>> storage_copy(storage);
         wrapper<std::vector<int>> storage_move(std::move(storage_copy));
@@ -22,14 +22,14 @@ int main() {
             return vec.size(); 
         });
 
-        RACHELWTZ_ASSERT(size == 10);
+        RACHELWTZ_DEBUG_ASSERT(size == 10);
 
         size = storage([](std::vector<int>& vec) noexcept {
             vec.push_back(110);
             return vec.size(); 
         });
 
-        RACHELWTZ_ASSERT(size == 11);
+        RACHELWTZ_DEBUG_ASSERT(size == 11);
     });
 
     return test.run();
