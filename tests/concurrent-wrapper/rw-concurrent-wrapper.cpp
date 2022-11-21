@@ -1,5 +1,5 @@
 #include "rw-concurrent-wrapper.hpp"
-using namespace RACHELWTZ_NAMESPACE;
+USING_RACHELWTZ_NAMEPSPACE;
 
 #include <vector>
 
