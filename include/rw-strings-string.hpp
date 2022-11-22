@@ -10,6 +10,12 @@ RACHELWTZ_STRINGS_BEGIN
 //
 template<>
 struct char_traits<char> : public std::char_traits<char> {
+    using char_type  = std::char_traits<char>::char_type;
+    using int_type   = std::char_traits<char>::int_type;
+    using off_type   = std::char_traits<char>::off_type;
+    using pos_type   = std::char_traits<char>::pos_type;
+    using state_type = std::char_traits<char>::state_type;
+
     [[nodiscard]]
     static constexpr uint8_t code_point_length(const char& c) noexcept {
         uint8_t n = c >> 4;
@@ -57,6 +63,12 @@ struct char_traits<char> : public std::char_traits<char> {
         }
         return true;
     }
+
+    static constexpr const char byte_order_mark[3] = {
+        static_cast<char>(0xEF),
+        static_cast<char>(0xBB),
+        static_cast<char>(0xBF)
+    };
 };
 
 using string      = basic_string<char>;

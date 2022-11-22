@@ -7,6 +7,12 @@ RACHELWTZ_STRINGS_BEGIN
 
 template<>
 struct char_traits<char32_t> : public std::char_traits<char32_t> {
+    using char_type  = std::char_traits<char32_t>::char_type;
+    using int_type   = std::char_traits<char32_t>::int_type;
+    using off_type   = std::char_traits<char32_t>::off_type;
+    using pos_type   = std::char_traits<char32_t>::pos_type;
+    using state_type = std::char_traits<char32_t>::state_type;
+
     [[nodiscard]]
     static constexpr uint8_t code_point_length(const char32_t& c) noexcept {
         if (c >= 0x000000 && c <= 0x10FFFF)
@@ -35,6 +41,8 @@ struct char_traits<char32_t> : public std::char_traits<char32_t> {
         }
         return true;
     }
+
+    static constexpr char32_t byte_order_mark[1] = { 0x0000FEFF };
 };
 
 using u32string      = basic_string<char32_t>;

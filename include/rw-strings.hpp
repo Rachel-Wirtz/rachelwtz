@@ -20,7 +20,13 @@ RACHELWTZ_STRINGS_BEGIN
 // Make sure to implement according to ChartTraits.
 //
 template<typename CharT>
-struct char_traits { };
+struct char_traits : public std::char_traits<CharT> {
+    using char_type  = std::char_traits<CharT>::char_type;
+    using int_type   = std::char_traits<CharT>::int_type;
+    using off_type   = std::char_traits<CharT>::off_type;
+    using pos_type   = std::char_traits<CharT>::pos_type;
+    using state_type = std::char_traits<CharT>::state_type;
+};
 
 template<typename CharT, typename TraitsT = char_traits<CharT>>
 class basic_string_view;
@@ -51,11 +57,11 @@ public:
     }
 
     constexpr size_type size(void) const noexcept {
-        return (base_type::size() + 1) * sizeof(value_type);
+        return base_type::size() * sizeof(value_type);
     }
 
     constexpr size_type length(void) const noexcept {
-        return (base_type::length() + 1);
+        return base_type::length();
     }
 
     constexpr size_type count(void) const noexcept {
@@ -64,6 +70,11 @@ public:
 
     constexpr bool is_valid(void) const noexcept {
         return traits_type::validate_code_points(this->data(), this->length() - 1);
+    }
+
+    [[nodiscard]]
+    constexpr basic_string_view<CharT, TraitsT> byte_order_mark(void) const noexcept {
+        return { traits_type::byte_order_mark, sizeof(traits_type::byte_order_mark) / sizeof(CharT) };
     }
 };
 
@@ -92,12 +103,18 @@ public:
     {
     }
 
+    template<size_type N>
+    constexpr basic_string_view(const value_type(&str)[N])
+        : base_type(str)
+    {
+    }
+
     constexpr size_type size(void) const noexcept {
-        return (base_type::size() + 1) * sizeof(value_type);
+        return base_type::size() * sizeof(value_type);
     }
 
     constexpr size_type length(void) const noexcept {
-        return (base_type::length() + 1);
+        return base_type::length();
     }
 
     constexpr size_type count(void) const noexcept {
@@ -107,9 +124,15 @@ public:
     constexpr bool is_valid(void) const noexcept {
         return traits_type::validate_code_points(this->data(), this->length() - 1);
     }
+
+    [[nodiscard]]
+    constexpr basic_string_view byte_order_mark(void) const noexcept {
+        return { traits_type::byte_order_mark, sizeof(traits_type::byte_order_mark) / sizeof(CharT) };
+    }
 };
 
 RACHELWTZ_STRINGS_END
+
 
 //
 // Strings Libraries
