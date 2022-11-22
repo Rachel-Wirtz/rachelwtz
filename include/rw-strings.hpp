@@ -52,28 +52,32 @@ public:
     using const_reverse_iterator = typename base_type::const_reverse_iterator;
 
     constexpr basic_string(const basic_string_view<CharT, TraitsT> sv)
-        : base_type(sv)
+        : base_type(sv.data(), sv.length())
     {
     }
 
+    [[nodiscard]]
     constexpr size_type size(void) const noexcept {
         return base_type::size() * sizeof(value_type);
     }
 
+    [[nodiscard]]
     constexpr size_type length(void) const noexcept {
         return base_type::length();
     }
 
+    [[nodiscard]]
     constexpr size_type count(void) const noexcept {
-        return traits_type::code_point_count(this->data(), this->length() - 1);
-    }
-
-    constexpr bool is_valid(void) const noexcept {
-        return traits_type::validate_code_points(this->data(), this->length() - 1);
+        return traits_type::code_point_count(this->data(), this->length());
     }
 
     [[nodiscard]]
-    constexpr basic_string_view<CharT, TraitsT> byte_order_mark(void) const noexcept {
+    constexpr bool is_valid(void) const noexcept {
+        return traits_type::validate_code_points(this->data(), this->length());
+    }
+
+    [[nodiscard]]
+    static constexpr basic_string_view<CharT, TraitsT> byte_order_mark(void) noexcept {
         return { traits_type::byte_order_mark, sizeof(traits_type::byte_order_mark) / sizeof(CharT) };
     }
 };
@@ -99,7 +103,7 @@ public:
 
     template<typename AllocT>
     constexpr basic_string_view(const basic_string<CharT, TraitsT, AllocT>& s)
-        : base_type(s)
+        : base_type(s.data(), s.length())
     {
     }
 
@@ -109,24 +113,28 @@ public:
     {
     }
 
+    [[nodiscard]]
     constexpr size_type size(void) const noexcept {
         return base_type::size() * sizeof(value_type);
     }
 
+    [[nodiscard]]
     constexpr size_type length(void) const noexcept {
         return base_type::length();
     }
 
+    [[nodiscard]]
     constexpr size_type count(void) const noexcept {
-        return traits_type::code_point_count(this->data(), this->length() - 1);
-    }
-
-    constexpr bool is_valid(void) const noexcept {
-        return traits_type::validate_code_points(this->data(), this->length() - 1);
+        return traits_type::code_point_count(this->data(), this->length());
     }
 
     [[nodiscard]]
-    constexpr basic_string_view byte_order_mark(void) const noexcept {
+    constexpr bool is_valid(void) const noexcept {
+        return traits_type::validate_code_points(this->data(), this->length());
+    }
+
+    [[nodiscard]]
+    static constexpr basic_string_view byte_order_mark(void) noexcept {
         return { traits_type::byte_order_mark, sizeof(traits_type::byte_order_mark) / sizeof(CharT) };
     }
 };

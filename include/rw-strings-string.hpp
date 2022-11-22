@@ -6,7 +6,7 @@
 RACHELWTZ_STRINGS_BEGIN
 
 //
-// Assuming that char holds either ANSI or UTF8.
+// Assuming that char holds either ANSI or UTF8 which share compatibility.
 //
 template<>
 struct char_traits<char> : public std::char_traits<char> {
