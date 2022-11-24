@@ -6,6 +6,45 @@
 RACHELWTZ_STRINGS_BEGIN
 
 template<>
+struct basic_character_encoding<char32_t> {
+    using char_type       = char32_t;
+    using integer_type    = uint32_t;
+    using length_type     = uint8_t;
+    using size_type       = size_t;
+    using difference_type = ptrdiff_t;
+    using reference       = char_type&;
+    using const_reference = const char_type&;
+    using pointer         = char_type*;
+    using const_pointer   = const char_type*;
+
+    [[nodiscard]]
+    static constexpr length_type length(const_reference elem) {
+        if (elem >= 0x000000 && elem <= 0x10FFFF)
+            return 1;
+        throw invalid_character_encoding();
+    }
+
+    [[nodiscard]]
+    static constexpr size_type count(const_pointer str, size_type len) {
+        return len;
+    }
+
+    [[nodiscard]]
+    static constexpr size_type length(const_pointer str) {
+        const_pointer ptr = str;
+        while (ptr && *ptr != U'\0')
+            ++ptr;
+        return ptr - str;
+    }
+
+    [[nodiscard]]
+    static constexpr difference_type difference(const_pointer a, const_pointer b) {
+        return a - b;
+    }
+};
+
+/*
+template<>
 struct char_traits<char32_t> : public std::char_traits<char32_t> {
     using char_type  = std::char_traits<char32_t>::char_type;
     using int_type   = std::char_traits<char32_t>::int_type;
@@ -44,6 +83,7 @@ struct char_traits<char32_t> : public std::char_traits<char32_t> {
 
     static constexpr char32_t byte_order_mark[1] = { 0x0000FEFF };
 };
+*/
 
 using u32string      = basic_string<char32_t>;
 using u32string_view = basic_string_view<char32_t>;

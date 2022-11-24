@@ -20,7 +20,7 @@ int main() {
         static_assert(ansi_count == 13,                "FAIL: ANSI string count incorrect.");
         static_assert(ansi.is_valid(),                 "FAIL: ANSI string validated incorrect.");
 
-        string ansi_str{ ansi };
+        basic_string ansi_str{ ansi };
         size_t ansi_str_size  = ansi_str.size();
         size_t ansi_str_len   = ansi_str.length();
         size_t ansi_str_count = ansi_str.count();

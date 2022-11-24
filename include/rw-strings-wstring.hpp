@@ -4,7 +4,88 @@
 #include "rw-strings.hpp"
 
 RACHELWTZ_STRINGS_BEGIN
+template<>
+struct basic_character_encoding<wchar_t> {
+    using char_type       = char32_t;
+    using integer_type    = std::conditional_t<sizeof(wchar_t) == sizeof(char16_t), uint16_t, std::conditional_t<sizeof(wchar_t) == sizeof(char32_t), uint32_t, void>>;
+    using length_type     = uint8_t;
+    using size_type       = size_t;
+    using difference_type = ptrdiff_t;
+    using reference       = char_type&;
+    using const_reference = const char_type&;
+    using pointer         = char_type*;
+    using const_pointer   = const char_type*;
 
+    [[nodiscard]]
+    static constexpr length_type length(const_reference elem) {
+        if constexpr (sizeof(wchar_t) == sizeof(char16_t)) {
+            integer_type n = (elem >> 8) & 0xFC;
+            if (n == 0xD8)
+                return 2;
+            if (n == 0xDC)
+                throw invalid_character_encoding();
+            return 1;
+        }
+
+        if constexpr (sizeof(wchar_t) == sizeof(char32_t)) {
+            if (elem >= 0x000000 && elem <= 0x10FFFF)
+                return 1;
+            throw invalid_character_encoding();
+        }
+
+        throw invalid_character_encoding();
+    }
+
+    [[nodiscard]]
+    static constexpr size_type count(const_pointer str, size_type len) {
+        if constexpr (sizeof(wchar_t) == sizeof(char16_t)) {
+            const_pointer ptr = str;
+            size_type final_count = 0;
+            while (ptr && ptr < (str + len)) {
+                ptr += length(*ptr);
+                ++final_count;
+            }
+            return final_count;
+        }
+
+        if constexpr (sizeof(wchar_t) == sizeof(char32_t)) {
+            return len;
+        }
+
+        throw invalid_character_encoding();
+    }
+
+    [[nodiscard]]
+    static constexpr size_type length(const_pointer str) {
+        if constexpr (sizeof(wchar_t) == sizeof(char16_t) || sizeof(wchar_t) == sizeof(char32_t)) {
+            const_pointer ptr = str;
+            while (ptr && *ptr != L'\0')
+                ++ptr;
+            return ptr - str;
+        }
+
+        throw invalid_character_encoding();
+    }
+
+    [[nodiscard]]
+    static constexpr difference_type difference(const_pointer a, const_pointer b) {
+        if constexpr (sizeof(wchar_t) == sizeof(char16_t)) {
+            if (a < b)
+                return -static_cast<difference_type>(count(a, b - a));
+            if (a > b)
+                return static_cast<difference_type>(count(b, a - b));
+            return 0;
+        }
+
+        if constexpr (sizeof(wchar_t) == sizeof(char32_t)) {
+            return a - b;
+        }
+
+        throw invalid_character_encoding();
+    }
+};
+
+/*
 //
 // Assuming that wchar_t holds either UTF16 or UTF32.
 //
@@ -101,6 +182,7 @@ struct char_traits<wchar_t> : public std::char_traits<wchar_t> {
         sizeof(wchar_t) == sizeof(char16_t) ? 0xFEFF : 0x0000FEFF
     };
 };
+*/
 
 using wstring      = basic_string<wchar_t>;
 using wstring_view = basic_string_view<wchar_t>;
