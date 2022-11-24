@@ -18,16 +18,14 @@ int main() {
         static_assert(ansi_size  == sizeof(char) * 13, "FAIL: ANSI string size incorrect.");
         static_assert(ansi_len   == 13,                "FAIL: ANSI string length incorrect.");
         static_assert(ansi_count == 13,                "FAIL: ANSI string count incorrect.");
-        static_assert(ansi.is_valid(),                 "FAIL: ANSI string validated incorrect.");
 
-        basic_string ansi_str{ ansi };
+        string ansi_str{ ansi };
         size_t ansi_str_size  = ansi_str.size();
         size_t ansi_str_len   = ansi_str.length();
         size_t ansi_str_count = ansi_str.count();
         RACHELWTZ_ASSERT(ansi_str_size  == sizeof(char) * 13);
         RACHELWTZ_ASSERT(ansi_str_len   == 13);
         RACHELWTZ_ASSERT(ansi_str_count == 13);
-        RACHELWTZ_ASSERT(ansi_str.is_valid());
 
         string_view ansi_sv{ ansi };
         size_t ansi_sv_size  = ansi_sv.size();
@@ -36,7 +34,6 @@ int main() {
         RACHELWTZ_ASSERT(ansi_sv_size  == sizeof(char) * 13);
         RACHELWTZ_ASSERT(ansi_sv_len   == 13);
         RACHELWTZ_ASSERT(ansi_sv_count == 13);
-        RACHELWTZ_ASSERT(ansi_sv.is_valid());
     });
 
     test.add([]() constexpr {
@@ -47,7 +44,6 @@ int main() {
         static_assert(wide_size  == sizeof(wchar_t) * 13, "FAIL: Wide string size incorrect.");
         static_assert(wide_len   == 13,                   "FAIL: Wide string length incorrect.");
         static_assert(wide_count == 13,                   "FAIL: Wide string count incorrect.");
-        static_assert(wide.is_valid(),                    "FAIL: Wide string validated incorrect.");
 
         wstring wide_str{ wide };
         size_t wide_str_size  = wide_str.size();
@@ -56,7 +52,6 @@ int main() {
         RACHELWTZ_ASSERT(wide_str_size  == sizeof(wchar_t) * 13);
         RACHELWTZ_ASSERT(wide_str_len   == 13);
         RACHELWTZ_ASSERT(wide_str_count == 13);
-        RACHELWTZ_ASSERT(wide_str.is_valid());
 
         wstring_view wide_sv{ wide_str };
         size_t wide_sv_size  = wide_sv.size();
@@ -65,7 +60,6 @@ int main() {
         RACHELWTZ_ASSERT(wide_sv_size  == sizeof(wchar_t) * 13);
         RACHELWTZ_ASSERT(wide_sv_len   == 13);
         RACHELWTZ_ASSERT(wide_sv_count == 13);
-        RACHELWTZ_ASSERT(wide_sv.is_valid());
     });
 
     test.add([]() constexpr {
@@ -76,7 +70,6 @@ int main() {
         static_assert(utf8_size  == 17 * sizeof(char8_t), "FAIL: UTF-8 string size incorrect.");
         static_assert(utf8_len   == 17,                   "FAIL: UTF-8 string length incorrect.");
         static_assert(utf8_count == 15,                   "FAIL: UTF-8 string count incorrect.");
-        static_assert(utf8.is_valid(),                    "FAIL: UTF-8 string validated incorrect.");
 
         u8string utf8_str{ utf8 };
         size_t utf8_str_size  = utf8_str.size();
@@ -85,7 +78,6 @@ int main() {
         RACHELWTZ_ASSERT(utf8_str_size  == 17 * sizeof(char8_t));
         RACHELWTZ_ASSERT(utf8_str_len   == 17);
         RACHELWTZ_ASSERT(utf8_str_count == 15);
-        RACHELWTZ_ASSERT(utf8_str.is_valid());
 
         u8string_view utf8_sv{ utf8_str };
         size_t utf8_sv_size  = utf8_sv.size();
@@ -94,7 +86,6 @@ int main() {
         RACHELWTZ_ASSERT(utf8_sv_size  == 17 * sizeof(char8_t));
         RACHELWTZ_ASSERT(utf8_sv_len   == 17);
         RACHELWTZ_ASSERT(utf8_sv_count == 15);
-        RACHELWTZ_ASSERT(utf8_sv.is_valid());
     });
 
     test.add([]() constexpr {
@@ -105,7 +96,6 @@ int main() {
         static_assert(utf16_size  == 16 * sizeof(char16_t), "FAIL: UTF-16 string size incorrect.");
         static_assert(utf16_len   == 16,                    "FAIL: UTF-16 string length incorrect.");
         static_assert(utf16_count == 15,                    "FAIL: UTF-16 string count incorrect.");
-        static_assert(utf16.is_valid(),                     "FAIL: UTF-16 string validated incorrect.");
 
         u16string utf16_str{ utf16 };
         size_t utf16_str_size  = utf16_str.size();
@@ -114,7 +104,6 @@ int main() {
         RACHELWTZ_ASSERT(utf16_str_size  == 16 * sizeof(char16_t));
         RACHELWTZ_ASSERT(utf16_str_len   == 16);
         RACHELWTZ_ASSERT(utf16_str_count == 15);
-        RACHELWTZ_ASSERT(utf16_str.is_valid());
 
         u16string_view utf16_sv{ utf16_str };
         size_t utf16_sv_size  = utf16_sv.size();
@@ -123,7 +112,6 @@ int main() {
         RACHELWTZ_ASSERT(utf16_sv_size  == 16 * sizeof(char16_t));
         RACHELWTZ_ASSERT(utf16_sv_len   == 16);
         RACHELWTZ_ASSERT(utf16_sv_count == 15);
-        RACHELWTZ_ASSERT(utf16_sv.is_valid());
     });
 
     test.add([]() constexpr {
@@ -134,7 +122,6 @@ int main() {
         static_assert(utf32_size  == 15 * sizeof(char32_t), "FAIL: UTF-32 string size incorrect.");
         static_assert(utf32_len   == 15,                    "FAIL: UTF-32 string length incorrect.");
         static_assert(utf32_count == 15,                    "FAIL: UTF-32 string count incorrect.");
-        static_assert(utf32.is_valid(),                     "FAIL: UTF-32 string validated incorrect.");
 
         u32string utf32_str{ utf32 };
         size_t utf32_str_size  = utf32_str.size();
@@ -143,7 +130,6 @@ int main() {
         RACHELWTZ_ASSERT(utf32_str_size  == 15 * sizeof(char32_t));
         RACHELWTZ_ASSERT(utf32_str_len   == 15);
         RACHELWTZ_ASSERT(utf32_str_count == 15);
-        RACHELWTZ_ASSERT(utf32_str.is_valid());
 
         u32string_view utf32_sv{ utf32_str };
         size_t utf32_sv_size  = utf32_sv.size();
@@ -152,7 +138,6 @@ int main() {
         RACHELWTZ_ASSERT(utf32_sv_size  == 15 * sizeof(char32_t));
         RACHELWTZ_ASSERT(utf32_sv_len   == 15);
         RACHELWTZ_ASSERT(utf32_sv_count == 15);
-        RACHELWTZ_ASSERT(utf32_sv.is_valid());
     });
 
     return test.run();

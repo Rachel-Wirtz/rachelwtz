@@ -6,7 +6,7 @@
 RACHELWTZ_STRINGS_BEGIN
 template<>
 struct basic_character_encoding<wchar_t> {
-    using char_type       = char32_t;
+    using char_type       = wchar_t;
     using integer_type    = std::conditional_t<sizeof(wchar_t) == sizeof(char16_t), uint16_t, std::conditional_t<sizeof(wchar_t) == sizeof(char32_t), uint32_t, void>>;
     using length_type     = uint8_t;
     using size_type       = size_t;

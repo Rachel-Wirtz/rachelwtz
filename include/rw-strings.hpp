@@ -420,66 +420,66 @@ public:
     using reverse_iterator       = std::reverse_iterator<iterator>;
     using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
-    static constexpr size_type npos = std::basic_string<char_type, traits_type, Allocator>::npos;
+    static constexpr size_type npos = std::basic_string<char_type, traits_type, allocator_type>::npos;
 
     constexpr basic_string() noexcept(std::is_nothrow_default_constructible_v<Allocator>)
         : basic_string(Allocator())
     {
     }
 
-    explicit constexpr basic_string(const Allocator& alloc) noexcept
+    explicit constexpr basic_string(const allocator_type& alloc) noexcept
         : m_String(alloc)
     {
     }
 
-    constexpr basic_string(size_type len, char_type elem, const Allocator& alloc = Allocator())
+    constexpr basic_string(size_type len, char_type elem, const allocator_type& alloc = allocator_type())
         : m_String(std::forward<size_type>(len), std::forward<char_type>(elem), alloc)
     {
     }
 
-    constexpr basic_string(const basic_string& other, size_type pos, size_type len, const Allocator& alloc = Allocator())
+    constexpr basic_string(const basic_string& other, size_type pos, size_type len, const allocator_type& alloc = allocator_type())
         : m_String(other.m_String, std::forward<size_type>(pos), std::forward<size_type>(len), alloc)
     {
     }
 
-    constexpr basic_string(const_pointer str, size_type len, const Allocator& alloc = Allocator())
+    constexpr basic_string(const_pointer str, size_type len, const allocator_type& alloc = allocator_type())
         : m_String(str, std::forward<size_type>(len), alloc)
     {
     }
 
-    constexpr basic_string(const_pointer str, const Allocator& alloc = Allocator())
+    constexpr basic_string(const_pointer str, const allocator_type& alloc = allocator_type())
         : m_String(str, alloc)
     {
     }
 
     template<std::input_iterator InputIterator>
-    constexpr basic_string(InputIterator first, InputIterator last, const Allocator& alloc = Allocator())
+    constexpr basic_string(InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type())
         : m_String(std::forward<InputIterator>(first), std::forward<InputIterator>(last), alloc)
     {
     }
 
-    constexpr basic_string(const basic_string& other, const Allocator& alloc)
+    constexpr basic_string(const basic_string& other, const allocator_type& alloc)
         : m_String(other.m_String, alloc)
     {
     }
 
-    constexpr basic_string(basic_string&& other, const Allocator& alloc) noexcept
+    constexpr basic_string(basic_string&& other, const allocator_type& alloc) noexcept
         : m_String(std::move(other.m_String), alloc)
     {
     }
 
-    constexpr basic_string(std::initializer_list<char_type> initlist, const Allocator& alloc = Allocator())
+    constexpr basic_string(std::initializer_list<char_type> initlist, const allocator_type& alloc = allocator_type())
         : m_String(std::forward<std::initializer_list<char_type>>(initlist), alloc)
     {
     }
 
-    constexpr basic_string(const basic_string_view<char_type, traits_type>& sv, const Allocator& alloc = Allocator())
-        : m_String(static_cast<const std::basic_string_view<char_type, traits_type>&>(sv), alloc)
+    constexpr basic_string(const basic_string_view<char_type, traits_type>& sv, const allocator_type& alloc = allocator_type())
+        : m_String(sv.m_StringView, alloc)
     {
     }
 
-    constexpr basic_string(const basic_string_view<char_type, traits_type>& sv, size_type pos, size_type len, const Allocator& alloc = Allocator())
-        : m_String(static_cast<const std::basic_string_view<char_type, traits_type>&>(sv), std::forward<size_type>(pos), std::forward<size_type>(len), alloc)
+    constexpr basic_string(const basic_string_view<char_type, traits_type>& sv, size_type pos, size_type len, const allocator_type& alloc = allocator_type())
+        : m_String(sv.m_StringView, std::forward<size_type>(pos), std::forward<size_type>(len), alloc)
     {
     }
 
@@ -559,7 +559,7 @@ public:
     }
 
     constexpr basic_string& assign(const basic_string_view<char_type, traits_type>& sv, size_type pos, size_type len = npos) {
-        m_String.assign(static_cast<const std::basic_string_view<char_type, traits_type&>>(sv), std::forward<size_type>(pos), std::forward<size_type>(len));
+        m_String.assign(sv.m_StringView, std::forward<size_type>(pos), std::forward<size_type>(len));
         return *this;
     }
 
@@ -1098,6 +1098,8 @@ public:
 
 protected:
     std::basic_string_view<char_type, traits_type> m_StringView;
+
+    friend class basic_string<char_type, traits_type>;
 };
 
 
